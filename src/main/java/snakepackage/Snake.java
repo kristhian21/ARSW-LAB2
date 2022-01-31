@@ -21,7 +21,7 @@ public class Snake extends Observable implements Runnable {
     private int direction = Direction.NO_DIRECTION;
     private final int INIT_SIZE = 3;
 
-    private boolean hasTurbo = false;
+    private boolean hasTurbo = true;
     private int jumps = 0;
     private boolean isSelected = false;
     private int growing = 0;
@@ -57,9 +57,9 @@ public class Snake extends Observable implements Runnable {
 
             try {
                 if (hasTurbo == true) {
-                    Thread.sleep(500 / 3);
+                    Thread.sleep(50 / 3);
                 } else {
-                    Thread.sleep(500);
+                    Thread.sleep(50);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -152,13 +152,15 @@ public class Snake extends Observable implements Runnable {
     }
 
     private void checkIfTurboBoost(Cell newCell) {
+        boolean bandera = true;
         if (Board.gameboard[newCell.getX()][newCell.getY()].isTurbo_boost()) {
             // get turbo_boost
-            for (int i = 0; i != Board.NR_TURBO_BOOSTS; i++) {
+            for (int i = 0; i != Board.NR_TURBO_BOOSTS && bandera; i++) {
                 if (Board.turbo_boosts[i] == newCell) {
                     Board.turbo_boosts[i].setTurbo_boost(false);
                     Board.turbo_boosts[i] = new Cell(-5, -5);
                     hasTurbo = true;
+                    bandera = !bandera;
                 }
 
             }
@@ -168,14 +170,15 @@ public class Snake extends Observable implements Runnable {
     }
 
     private void checkIfJumpPad(Cell newCell) {
-
+        boolean bandera = true;
         if (Board.gameboard[newCell.getX()][newCell.getY()].isJump_pad()) {
             // get jump_pad
-            for (int i = 0; i != Board.NR_JUMP_PADS; i++) {
+            for (int i = 0; i != Board.NR_JUMP_PADS && bandera; i++) {
                 if (Board.jump_pads[i] == newCell) {
                     Board.jump_pads[i].setJump_pad(false);
                     Board.jump_pads[i] = new Cell(-5, -5);
                     this.jumps++;
+                    bandera = !bandera;
                 }
 
             }

@@ -1,0 +1,19 @@
+Punto 2:
+    - Las condiciones de carrera, que se dan cuando dos serpientes llegan al mismo recurso al mismo tiempo, son:
+        * El acceso a los ratones
+        * El acceso a los muros
+        * El acceso a los item de teletransportacion
+        * El acceso a los boost
+        * El acceso a una celda del tablero
+
+    - Uso inadecuado de colecciones, considerando su manejo concurrente
+     (para esto, aumente la velocidad del juego y ejecútelo varias veces hasta que se genere un error):
+        * cuando se aumento la velocidad y se genero el error se logra apreciar que en el momento que
+        dos serpientes acceden al mismo item dentro del tablero, cuando se va a dibujar el tablero nuevamente
+        se genera el error de concurredModificationException. Esta excepcion ocurre cuando un metodo detecta
+        que se quiere hacer modificacion concurrente de un objeto cuando su modificacion no esta permitida.
+
+     - Uso innecesario de esperas activas:
+        *  Cada metodo check hace iteraciones de mas, en el momento en el que se verifica si la nueva posicion de la serpiente
+        cae en un item, se sigue verificando en el ciclo for luego de que ya se detecto que la nueva posicion cayo en algun
+        item, haciendo iteraciones innecesarias.
