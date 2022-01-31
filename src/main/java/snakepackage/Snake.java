@@ -85,7 +85,7 @@ public class Snake extends Observable implements Runnable {
         checkIfJumpPad(newCell);
         checkIfTurboBoost(newCell);
         checkIfBarrier(newCell);
-        
+
         snakeBody.push(newCell);
 
         if (growing <= 0) {
@@ -157,8 +157,10 @@ public class Snake extends Observable implements Runnable {
             // get turbo_boost
             for (int i = 0; i != Board.NR_TURBO_BOOSTS && bandera; i++) {
                 if (Board.turbo_boosts[i] == newCell) {
-                    Board.turbo_boosts[i].setTurbo_boost(false);
-                    Board.turbo_boosts[i] = new Cell(-5, -5);
+                    synchronized (Board.turbo_boosts[i]) {
+                        Board.turbo_boosts[i].setTurbo_boost(false);
+                        Board.turbo_boosts[i] = new Cell(-5, -5);
+                    }
                     hasTurbo = true;
                     bandera = !bandera;
                 }
@@ -175,8 +177,10 @@ public class Snake extends Observable implements Runnable {
             // get jump_pad
             for (int i = 0; i != Board.NR_JUMP_PADS && bandera; i++) {
                 if (Board.jump_pads[i] == newCell) {
-                    Board.jump_pads[i].setJump_pad(false);
-                    Board.jump_pads[i] = new Cell(-5, -5);
+                    synchronized (Board.jump_pads[i]) {
+                        Board.jump_pads[i].setJump_pad(false);
+                        Board.jump_pads[i] = new Cell(-5, -5);
+                    }
                     this.jumps++;
                     bandera = !bandera;
                 }
@@ -189,7 +193,7 @@ public class Snake extends Observable implements Runnable {
 
     private void checkIfFood(Cell newCell) {
         Random random = new Random();
-
+        boolean bandera = true;
         if (Board.gameboard[newCell.getX()][newCell.getY()].isFood()) {
             // eat food
             growing += 3;
@@ -199,22 +203,25 @@ public class Snake extends Observable implements Runnable {
             System.out.println("[" + idt + "] " + "EATING "
                     + newCell.toString());
 
-            for (int i = 0; i != Board.NR_FOOD; i++) {
+
+
+            while (Board.gameboard[x][y].hasElements()) {
+                x = random.nextInt(GridSize.GRID_HEIGHT);
+                y = random.nextInt(GridSize.GRID_WIDTH);
+            }
+
+            for (int i = 0; i != Board.NR_FOOD && bandera; i++) {
                 if (Board.food[i].getX() == newCell.getX()
                         && Board.food[i].getY() == newCell.getY()) {
-                    Board.gameboard[Board.food[i].getX()][Board.food[i].getY()]
-                            .setFood(false);
-
-                    while (Board.gameboard[x][y].hasElements()) {
-                        x = random.nextInt(GridSize.GRID_HEIGHT);
-                        y = random.nextInt(GridSize.GRID_WIDTH);
+                        synchronized (Board.food[i]) {
+                            Board.gameboard[newCell.getX()][newCell.getY()].setFood(false);
+                            Board.food[i] = new Cell(x, y);
+                            Board.gameboard[x][y].setFood(true);
+                        }
+                    bandera = !bandera;
                     }
-                    Board.food[i] = new Cell(x, y);
-                    Board.gameboard[x][y].setFood(true);
                 }
             }
-        }
-
     }
 
     private Cell changeDirection(Cell newCell) {
