@@ -23,7 +23,7 @@ public class SnakeApp {
 
     private static SnakeApp app;
     public static final int MAX_THREADS = 8;
-    private boolean enJuego = false;
+    public static boolean enJuego = false;
     Snake[] snakes = new Snake[MAX_THREADS];
     private static final Cell[] spawn = {
         new Cell(1, (GridSize.GRID_HEIGHT / 2) / 2),
@@ -38,6 +38,8 @@ public class SnakeApp {
         GridSize.GRID_HEIGHT - 2)};
     private JFrame frame;
     private JButton iniciar;
+    private JButton pausar;
+    private JButton reaundar;
     private static Board board;
     int nr_selected = 0;
     Thread[] thread = new Thread[MAX_THREADS];
@@ -57,7 +59,11 @@ public class SnakeApp {
         JPanel actionsBPabel=new JPanel();
         actionsBPabel.setLayout(new FlowLayout());
         iniciar = new JButton("Iniciar");
+        pausar = new JButton("Suspender");
+        reaundar = new JButton("Reanudar");
         actionsBPabel.add(iniciar);
+        actionsBPabel.add(pausar);
+        actionsBPabel.add(reaundar);
         frame.add(actionsBPabel,BorderLayout.SOUTH);
         prepararAcciones();
     }
@@ -66,7 +72,36 @@ public class SnakeApp {
         iniciar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                enJuego = true;
+                if (!enJuego){
+                    enJuego = true;
+                    for (int i = 0; i != MAX_THREADS; i++) {
+                        snakes[i].setEnPausa(false);
+                        synchronized (snakes[i]){
+                            snakes[i].notify();
+                        }
+                    }
+                }
+            }
+        });
+
+        pausar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i != MAX_THREADS; i++) {
+                    snakes[i].setEnPausa(true);
+                }
+            }
+        });
+
+        reaundar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i != MAX_THREADS; i++) {
+                    snakes[i].setEnPausa(false);
+                    synchronized (snakes[i]){
+                        snakes[i].notify();
+                    }
+                }
             }
         });
     }
@@ -103,14 +138,6 @@ public class SnakeApp {
         for (int i = 0; i != MAX_THREADS; i++) {
             System.out.println("["+i+"] :"+thread[i].getState());
         }
-    }
-
-    public boolean isEnJuego() {
-        return enJuego;
-    }
-
-    public void setEnJuego(boolean enJuego) {
-        this.enJuego = enJuego;
     }
 
     public static SnakeApp getApp() {
