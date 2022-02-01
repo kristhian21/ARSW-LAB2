@@ -73,29 +73,30 @@ public class Snake extends Observable implements Runnable {
     }
 
     private void snakeCalc() {
-        head = snakeBody.peekFirst();
+        synchronized (snakeBody){
+            head = snakeBody.peekFirst();
 
-        newCell = head;
+            newCell = head;
 
-        newCell = changeDirection(newCell);
-        
-        randomMovement(newCell);
+            newCell = changeDirection(newCell);
 
-        checkIfFood(newCell);
-        checkIfJumpPad(newCell);
-        checkIfTurboBoost(newCell);
-        checkIfBarrier(newCell);
+            randomMovement(newCell);
 
-        snakeBody.push(newCell);
+            checkIfFood(newCell);
+            checkIfJumpPad(newCell);
+            checkIfTurboBoost(newCell);
+            checkIfBarrier(newCell);
 
-        if (growing <= 0) {
-            newCell = snakeBody.peekLast();
-            snakeBody.remove(snakeBody.peekLast());
-            Board.gameboard[newCell.getX()][newCell.getY()].freeCell();
-        } else if (growing != 0) {
-            growing--;
+            snakeBody.push(newCell);
+
+            if (growing <= 0) {
+                newCell = snakeBody.peekLast();
+                snakeBody.remove(snakeBody.peekLast());
+                Board.gameboard[newCell.getX()][newCell.getY()].freeCell();
+            } else if (growing != 0) {
+                growing--;
+            }
         }
-
     }
 
     private void checkIfBarrier(Cell newCell) {
@@ -157,10 +158,8 @@ public class Snake extends Observable implements Runnable {
             // get turbo_boost
             for (int i = 0; i != Board.NR_TURBO_BOOSTS && bandera; i++) {
                 if (Board.turbo_boosts[i] == newCell) {
-                    synchronized (Board.turbo_boosts[i]) {
-                        Board.turbo_boosts[i].setTurbo_boost(false);
-                        Board.turbo_boosts[i] = new Cell(-5, -5);
-                    }
+                    Board.turbo_boosts[i].setTurbo_boost(false);
+                    Board.turbo_boosts[i] = new Cell(-5, -5);
                     hasTurbo = true;
                     bandera = !bandera;
                 }
@@ -177,10 +176,8 @@ public class Snake extends Observable implements Runnable {
             // get jump_pad
             for (int i = 0; i != Board.NR_JUMP_PADS && bandera; i++) {
                 if (Board.jump_pads[i] == newCell) {
-                    synchronized (Board.jump_pads[i]) {
-                        Board.jump_pads[i].setJump_pad(false);
-                        Board.jump_pads[i] = new Cell(-5, -5);
-                    }
+                    Board.jump_pads[i].setJump_pad(false);
+                    Board.jump_pads[i] = new Cell(-5, -5);
                     this.jumps++;
                     bandera = !bandera;
                 }
@@ -213,15 +210,13 @@ public class Snake extends Observable implements Runnable {
             for (int i = 0; i != Board.NR_FOOD && bandera; i++) {
                 if (Board.food[i].getX() == newCell.getX()
                         && Board.food[i].getY() == newCell.getY()) {
-                        synchronized (Board.food[i]) {
-                            Board.gameboard[newCell.getX()][newCell.getY()].setFood(false);
-                            Board.food[i] = new Cell(x, y);
-                            Board.gameboard[x][y].setFood(true);
-                        }
+                    Board.gameboard[newCell.getX()][newCell.getY()].setFood(false);
+                    Board.food[i] = new Cell(x, y);
+                    Board.gameboard[x][y].setFood(true);
                     bandera = !bandera;
-                    }
                 }
             }
+        }
     }
 
     private Cell changeDirection(Cell newCell) {
