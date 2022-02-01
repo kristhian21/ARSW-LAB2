@@ -17,3 +17,24 @@ Punto 2:
         *  Cada metodo check hace iteraciones de mas, en el momento en el que se verifica si la nueva posicion de la serpiente
         cae en un item, se sigue verificando en el ciclo for luego de que ya se detecto que la nueva posicion cayo en algun
         item, haciendo iteraciones innecesarias.
+
+Punto 3:
+
+    - Para solucionar las posibles condiciones de carrera so necesita implementar la herramienta de synchronized para
+    evitar que se acceda concurrentemente al mismo recurso, esta parte llega a ser complicada que se nos píde que
+    solo sincronicemos lo estrictamente necesario. por lo que toca analizar a fondo el codigo para decidir donde
+    y que parte lo utilizamos.
+
+
+
+    - Para el error que salia, nos dimos cuenta que la lista encanada que manejaba el cuerpo de la serpiente se manejaba
+    concurrentemente y en caso de que se encontrara con la condicion de carrera pasaba que se accedia de manera concurrente
+    causqando un error en el metodo quedibuja la serpiente. por lo que fue necesario sincronizar esta linkedlist para que
+    dejara de salir el error y el juego corriera como se deseaba.
+
+
+
+    - Dentro del codigo llegamos a encontrar varias esperas activas innecesarias. como for que despues de encontrar
+    lo que necesitan siguen de manera activa recorriendo el array en varias ocasiones. lo que realizamos ahi fue
+    implementar una condicion de salida del ciclo para cada una de estas activas con el proposito de que se
+    resuelva este problema correctamente.
