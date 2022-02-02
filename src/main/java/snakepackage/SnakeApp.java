@@ -3,7 +3,7 @@ package snakepackage;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import enums.GridSize;
 import java.awt.BorderLayout;
@@ -12,8 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
  * @author jd-
@@ -40,6 +38,8 @@ public class SnakeApp {
     private JButton iniciar;
     private JButton pausar;
     private JButton reaundar;
+    private JLabel mejorSerpiente;
+    private JLabel peorSerpiente;
     private static Board board;
     int nr_selected = 0;
     Thread[] thread = new Thread[MAX_THREADS];
@@ -61,9 +61,13 @@ public class SnakeApp {
         iniciar = new JButton("Iniciar");
         pausar = new JButton("Suspender");
         reaundar = new JButton("Reanudar");
+        mejorSerpiente = new JLabel("Mejor serpiente: ");
+        peorSerpiente = new JLabel("Peor serpiente: ");
         actionsBPabel.add(iniciar);
         actionsBPabel.add(pausar);
         actionsBPabel.add(reaundar);
+        actionsBPabel.add(mejorSerpiente);
+        actionsBPabel.add(peorSerpiente);
         frame.add(actionsBPabel,BorderLayout.SOUTH);
         prepararAcciones();
     }
@@ -87,9 +91,17 @@ public class SnakeApp {
         pausar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int mayor = 0;
+                int indice = 0;
                 for (int i = 0; i != MAX_THREADS; i++) {
                     snakes[i].setEnPausa(true);
+                    if (!snakes[i].isSnakeEnd() && snakes[i].getBody().size() > mayor){
+                        mayor = snakes[i].getBody().size();
+                        indice = i;
+                    }
                 }
+                mejorSerpiente.setText("Mejor serpiente: " + indice);
+                peorSerpiente.setText("Peor serpiente: " + Snake.numeroPrimeraMuerta);
             }
         });
 

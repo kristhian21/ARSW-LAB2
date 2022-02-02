@@ -27,6 +27,8 @@ public class Snake extends Observable implements Runnable {
     private int growing = 0;
     public boolean goal = false;
     private boolean enPausa = true;
+    private static boolean primerMuerto = false;
+    public static int numeroPrimeraMuerta = -1;
 
     public Snake(int idt, Cell head, int direction) {
         this.idt = idt;
@@ -117,6 +119,10 @@ public class Snake extends Observable implements Runnable {
             System.out.println("[" + idt + "] " + "CRASHED AGAINST BARRIER "
                     + newCell.toString());
             snakeEnd=true;
+            if (!primerMuerto){
+                primerMuerto = true;
+                numeroPrimeraMuerta = idt;
+            }
         }
     }
 
