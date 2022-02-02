@@ -7,8 +7,8 @@
 Ejercicio inividual o en parejas.
 
 ### Elaborado por: 
-Kristhian Segura
-Eduardo Ospina
+1) Kristhian Segura
+2) Eduardo Ospina
 
 ### Introduccion:
 
