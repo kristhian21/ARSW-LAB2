@@ -3,7 +3,20 @@
 
 #### Laboratorio - Programación concurrente, condiciones de carrera, esquemas de sincronización, colecciones sincronizadas y concurrentes.
 
+
 Ejercicio inividual o en parejas.
+
+### Elaborado por: 
+Kristhian Segura
+Eduardo Ospina
+
+### Introduccion:
+
+Para el desarrollo de este laboratorio toca tener en cuenta varios puntos. Para empézar, se requiere los conocimiento del manejo de hilos que se empezo en el anterior laboratorio. Se hace una implementacion más a fondo de los conceptos basicos vistos anteriormente y se aumenta el punto de vista en la implementacios de los hilos. 
+
+En este laboratorio tambien se aplicara la refactorizacion de codigo, este punto ayudara a el que lo realiza aplicar y mejorar el entendimiento y modificacion de codigo. Permitiendo que se ejerciten estas habilidades que llegan a ser muy utiles. 
+
+Con el desarrollo del laboratorio se busca entender como aplicar y utilizar hilos de manera correcta en varias situacions, ayudando a entender sus funciones y su necesita obligatoria en situaciones que lo ameritan. juntandolo con el laboratorio anterior se busca cerrar el tema especifico de hilos para poder avanzar con los temas del grupo. por lo que su necesidad es muy importante para desarrollar el curso correctamente. 
 
 ### Part I
 
@@ -69,3 +82,10 @@ Ejercicio
         Recuerde que la suspensión de las serpientes NO es instantánea, y que se debe garantizar que se muestre información consistente.
     
 
+### Conclusiones: 
+
+Al final el laboratorio llegamos a encontrar varios problemas que nos demoraron para su finalizacion. Nos llego a costar entender de manera correcta como modificar el codigo en ciertas partes, ya que al unir los metodos de hilos con la aplicacion de interfaces nos llegamos a confundir en varias ocaciones. por otro lado el tema del manejo de manejo del tiempo de corrido de los hilos en relacion con el proceso principal y la manera en como se lograba que los hilos funcionaran de la manera que necesitan. para que en el primer punto si se pudieran detener todos los hilos cada cierto tiempo sin que se dañara el funcionamiento del proceso. 
+
+A parte de estos problemas que nos tomaron tiempo para solucionar, logramos realizar el laboratorio d emanera satisfactoria y logrando entender de una manera importante el funcionamiento a profundidad de hilos y sus aplicaciones varias. 
+
+Para concluir notamos como nuestro pensamiento logico a la hora de programar va cambiando cada vez mas y buscamos inconcientemente la manera de volverlo concurrentemente aunque en ciertos casos nos llegue a complicar un poco mas las implementaciones a corto plazo. 
